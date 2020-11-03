@@ -2309,6 +2309,11 @@ simple_expr:
 %inline simple_expr_:
   | mkrhs(val_longident)
       { Pexp_ident ($1) }
+  | LPAREN DOT LBRACKET mod_ = mkrhs(module_expr) RBRACKET DOT RPAREN DOT expr=mkrhs(val_longident)
+      { 
+        let expr' = mkexp ~loc:$sloc (Pexp_ident {txt=Option.get (unflatten ("Inlined_____" :: (flatten expr.txt))) ; loc=expr.loc}) in
+        Pexp_letmodule ({txt=Some "Inlined_____"; loc=mod_.loc}, mod_.txt, expr') 
+      }
   | constant
       { Pexp_constant $1 }
   | mkrhs(constr_longident) %prec prec_constant_constructor
