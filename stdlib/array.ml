@@ -107,6 +107,12 @@ let map f a =
     r
   end
 
+let map_inplace f a =
+  let l = length a in
+  for i = 0 to l - 1 do
+    unsafe_set a i (f (unsafe_get a i))
+  done
+
 let map2 f a b =
   let la = length a in
   let lb = length b in
@@ -134,6 +140,12 @@ let mapi f a =
     done;
     r
   end
+
+let mapi_inplace f a =
+  let l = length a in
+  for i = 0 to l - 1 do
+    unsafe_set a i (f i (unsafe_get a i))
+  done
 
 let to_list a =
   let rec tolist i res =

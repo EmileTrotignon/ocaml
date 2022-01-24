@@ -278,4 +278,26 @@ let () =
   *)
 ;;
 
+let print_Array = Array.iter (Printf.printf "%i\n")
+
+let () =
+  let a = [|1;2;3;4;5;6;7;8;9|] in
+  Array.map_inplace (( * ) 2) a ;
+  assert (a = [|2;4;6;8;10;12;14;16;18|]);
+  Array.map_inplace (fun e -> e / 2) a ;
+  assert (a = [|1;2;3;4;5;6;7;8;9|]);
+  let a = [||] in
+  Array.map_inplace (( * ) 2) a ;
+  assert (a = [||]);
+  let a = [|1;2;3;4;5;6;7;8;9|] in
+  Array.mapi_inplace (fun i e ->  i + 1 + e * 2) a ;
+  assert (a = [|3;6;9;12;15;18;21;24;27|]);
+  Array.mapi_inplace ((fun i e ->  (e - i - 1) / 2) ) a ;
+  assert (a = [|1;2;3;4;5;6;7;8;9|]);
+  let a = [||] in
+  Array.mapi_inplace ((fun i e ->  (e - i) / 2)) a ;
+  assert (a = [||])
+;;
+
+
 let () = print_endline "OK"

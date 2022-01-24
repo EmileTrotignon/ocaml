@@ -182,6 +182,14 @@ val mapi : (int -> char -> char) -> bytes -> bytes
     index (in increasing index order) and stores the resulting bytes
     in a new sequence that is returned as the result. *)
 
+val map_inplace : (char -> char) -> bytes -> unit
+(** [map_inplace f s] replaces every byte [e] in [s] by [f e]. *)
+
+val mapi_inplace : (int -> char -> char) -> bytes -> unit
+(** Same as {!map_inplace}, but the
+   function is applied to the index of the element as first argument,
+   and the element itself as second argument. *)
+
 val fold_left : ('a -> char -> 'a) -> 'a -> bytes -> 'a
 (** [fold_left f x s] computes
     [f (... (f (f x (get s 0)) (get s 1)) ...) (get s (n-1))],

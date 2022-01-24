@@ -165,6 +165,15 @@ val mapi : (int -> 'a -> 'b) -> 'a array -> 'b array
    function is applied to the index of the element as first argument,
    and the element itself as second argument. *)
 
+val map_inplace : ('a -> 'a) -> 'a array -> unit
+(** [map_inplace f a] replaces every element [e] in [a] by [f e]. *)
+
+
+val mapi_inplace : (int -> 'a -> 'a) -> 'a array -> unit
+(** Same as {!map_inplace}, but the
+   function is applied to the index of the element as first argument,
+   and the element itself as second argument. *)
+
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b array -> 'a
 (** [fold_left f init a] computes
    [f (... (f (f init a.(0)) a.(1)) ...) a.(n-1)],
