@@ -1416,12 +1416,11 @@ val eprintf : ('a, formatter, unit) format -> 'a
     the formatter is flushed, such as with {!print_flush}.
 *)
 
-val sprintf : ('a, unit, string) format -> 'a
+val sprintf : ('a, formatter, unit, string) format4 -> 'a
 (** Same as [printf] above, but instead of printing on a formatter,
   returns a string containing the result of formatting the arguments.
   Note that the pretty-printer queue is flushed at the end of {e each
-  call} to [sprintf]. Note that if your format string contains a [%a],
-  you should use [asprintf].
+  call} to [sprintf].
 
   In case of multiple and related calls to [sprintf] to output
   material on a single string, you should consider using [fprintf]
@@ -1434,10 +1433,7 @@ val sprintf : ('a, unit, string) format -> 'a
 *)
 
 val asprintf : ('a, formatter, unit, string) format4 -> 'a
-(** Same as [printf] above, but instead of printing on a formatter,
-  returns a string containing the result of formatting the arguments.
-  The type of [asprintf] is general enough to interact nicely with [%a]
-  conversions.
+(** Same as [sprintf].
 
   @since 4.01
 *)
@@ -1498,7 +1494,7 @@ val ikfprintf :
   @since 3.12
 *)
 
-val ksprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
+val ksprintf : (string -> 'a) -> ('b, formatter, unit, 'a) format4 -> 'b
 (** Same as [sprintf] above, but instead of returning the string,
   passes it to the first argument. *)
 

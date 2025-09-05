@@ -1483,41 +1483,6 @@ let rec output_acc ppf acc = match acc with
   | Acc_invalid_arg (p, msg) -> output_acc ppf p; invalid_arg msg;
   | End_of_acc               -> ()
 
-(* Recursively output an "accumulator" containing a reversed list of
-   printing entities (string, char, flus, ...) in a buffer. *)
-(* Differ from Printf.bufput_acc by the interpretation of formatting. *)
-(* Used as a continuation of CamlinternalFormat.make_printf. *)
-let rec strput_acc ppf acc = match acc with
-  | Acc_string_literal (Acc_formatting_lit (p, Magic_size (_, size)), s)
-  | Acc_data_string (Acc_formatting_lit (p, Magic_size (_, size)), s) ->
-    strput_acc ppf p;
-    pp_print_as_size ppf (Size.of_int size) s;
-  | Acc_char_literal (Acc_formatting_lit (p, Magic_size (_, size)), c)
-  | Acc_data_char (Acc_formatting_lit (p, Magic_size (_, size)), c) ->
-    strput_acc ppf p;
-    pp_print_as_size ppf (Size.of_int size) (String.make 1 c);
-  | Acc_delay (Acc_formatting_lit (p, Magic_size (_, size)), f) ->
-    strput_acc ppf p;
-    pp_print_as_size ppf (Size.of_int size) (f ());
-  | Acc_formatting_lit (p, f) ->
-    strput_acc ppf p;
-    output_formatting_lit ppf f;
-  | Acc_formatting_gen (p, Acc_open_tag acc') ->
-    strput_acc ppf p;
-    pp_open_stag ppf (String_tag (compute_tag strput_acc acc'))
-  | Acc_formatting_gen (p, Acc_open_box acc') ->
-    strput_acc ppf p;
-    let (indent, bty) = open_box_of_string (compute_tag strput_acc acc') in
-    pp_open_box_gen ppf indent bty
-  | Acc_string_literal (p, s)
-  | Acc_data_string (p, s)   -> strput_acc ppf p; pp_print_string ppf s;
-  | Acc_char_literal (p, c)
-  | Acc_data_char (p, c)     -> strput_acc ppf p; pp_print_char ppf c;
-  | Acc_delay (p, f)         -> strput_acc ppf p; pp_print_string ppf (f ());
-  | Acc_flush p              -> strput_acc ppf p; pp_print_flush ppf ();
-  | Acc_invalid_arg (p, msg) -> strput_acc ppf p; invalid_arg msg;
-  | End_of_acc               -> ()
-
 (*
 
   Defining [fprintf] and various flavors of [fprintf].
@@ -1558,23 +1523,16 @@ let ksprintf k (Format (fmt, _)) =
   let b = pp_make_buffer () in
   let ppf = formatter_of_buffer b in
   let k acc =
-    strput_acc ppf acc;
+    output_acc ppf acc;
     k (flush_buffer_formatter b ppf) in
   make_printf k End_of_acc fmt
 
 
 let sprintf fmt = ksprintf id fmt
 
-let kasprintf k (Format (fmt, _)) =
-  let b = pp_make_buffer () in
-  let ppf = formatter_of_buffer b in
-  let k acc =
-    output_acc ppf acc;
-    k (flush_buffer_formatter b ppf) in
-  make_printf k End_of_acc fmt
+let kasprintf = ksprintf
 
-
-let asprintf fmt = kasprintf id fmt
+let asprintf = sprintf
 
 (* Flushing standard formatters at end of execution. *)
 
