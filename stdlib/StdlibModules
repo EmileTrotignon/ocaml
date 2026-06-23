@@ -55,6 +55,7 @@ STDLIB_MODULE_BASENAMES = \
   array \
   iarray \
   bytes \
+  map \
   string \
   unit \
   marshal \
@@ -66,7 +67,6 @@ STDLIB_MODULE_BASENAMES = \
   parsing \
   repr \
   set \
-  map \
   stack \
   queue \
   buffer \

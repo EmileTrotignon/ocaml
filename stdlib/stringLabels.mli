@@ -895,6 +895,8 @@ val get_int64_le : string -> int -> int64
     @since 4.13
 *)
 
+module Map : Map.S with type key = t
+
 (**/**)
 
 (* The following is for system use only. Do not call directly. *)

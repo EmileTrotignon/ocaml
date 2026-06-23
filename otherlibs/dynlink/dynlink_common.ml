@@ -19,7 +19,7 @@ module String = struct
   include String
   module Set = Set.Make (String)
   module Map = struct
-    include Map.Make (String)
+    include String.Map
 
     let keys t =
       fold (fun key _data keys -> Set.add key keys) t Set.empty

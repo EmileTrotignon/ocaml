@@ -758,3 +758,10 @@ let spellcheck ?(max_dist = default_max_dist) iter_dict s =
   let us = uchar_array_of_utf_8_string s in
   iter_dict (select_words s us);
   List.rev !acc
+
+module Map = Map.Make (
+  struct
+    type nonrec t = t
+    let compare = compare
+  end
+)

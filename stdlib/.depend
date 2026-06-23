@@ -821,6 +821,7 @@ std_exit.cmi :
 stdlib__String.cmo : string.ml \
     stdlib__Uchar.cmi \
     stdlib.cmi \
+    stdlib__Map.cmi \
     stdlib__List.cmi \
     stdlib__Int.cmi \
     stdlib__Char.cmi \
@@ -830,6 +831,7 @@ stdlib__String.cmo : string.ml \
 stdlib__String.cmx : string.ml \
     stdlib__Uchar.cmx \
     stdlib.cmx \
+    stdlib__Map.cmx \
     stdlib__List.cmx \
     stdlib__Int.cmx \
     stdlib__Char.cmx \
@@ -838,7 +840,8 @@ stdlib__String.cmx : string.ml \
     stdlib__String.cmi
 stdlib__String.cmi : string.mli \
     stdlib__Uchar.cmi \
-    stdlib__Seq.cmi
+    stdlib__Seq.cmi \
+    stdlib__Map.cmi
 stdlib__StringLabels.cmo : stringLabels.ml \
     stdlib__String.cmi \
     stdlib__StringLabels.cmi
